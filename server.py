@@ -58,5 +58,20 @@ def receive_location():
     print(f"[📍 LOCATION RECEIVED] Lat: {lat}, Lon: {lon}")
     return jsonify({"status": "received"})
 
+
+from flask import send_from_directory
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory('uploads', filename)
+
+import os
+@app.route('/list_uploads')
+def list_uploads():
+    return {"files": os.listdir("uploads")}
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    return send_from_directory('uploads', filename, as_attachment=True)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
